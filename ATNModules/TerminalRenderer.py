@@ -4,15 +4,10 @@ TerminalRenderer\n
 便于用控制台设计图形和键盘操作程序，以增强程序的可读性
 与其他控制台程序一样，TerminalRenderer不适合实时高速渲染\n
 By ATN\n
-结构：\n
+函数列表：\n
 change_title()\n
 print_in_pos()\n
 update()\n
-_decorate_string()\n
-_len_in_size()\n
-_get_terminal_size()\n
-_getch()\n
-_clear()
 """
 
 import os, msvcrt, time
