@@ -1,1 +1,1 @@
-__all__ = ['TerminalRenderer']
+__all__ = ['TerminalRenderer', 'LogWrapper']

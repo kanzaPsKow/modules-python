@@ -5,9 +5,9 @@ TerminalRenderer\n
 与其他控制台程序一样，TerminalRenderer不适合实时高速渲染\n
 By ATN\n
 函数列表：\n
-change_title()\n
-print_in_pos()\n
-update()\n
+change_title\n
+print_in_pos\n
+update\n
 """
 
 import os, msvcrt, time
