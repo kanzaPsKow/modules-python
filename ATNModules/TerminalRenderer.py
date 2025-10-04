@@ -56,14 +56,12 @@ def _get_terminal_size():
     terminal_size = os.get_terminal_size()
     return terminal_size.columns, terminal_size.lines
 
-def getch(sleep=0.02):
-    """在不中断的情况下获取键盘输入。\n
-    sleep=0.02 ->int 每一次获取间隔的时间。单位秒。\n
-    return b'字符'"""
+def getch():
+    """在不阻断程序的情况下获取键盘输入。\n
+    return b'string'"""
     get = None
     if msvcrt.kbhit(): # 如果键盘有输入
         get = msvcrt.getch() # 读取键盘输入
-    time.sleep(sleep)
     return get
 
 def place(string, x, y, fore_color='default', back_color='default'):
@@ -144,8 +142,8 @@ if __name__ == '__main__':
     os.system('cls')
     background = 'Welcome  TerminalRenderer  Welcome'
     while 1:
-        print_in_pos(background, int(_get_terminal_size()[0] / 2) - int(_len_in_size(background) / 2), int(_get_terminal_size()[1] / 2))
-        update()
+        place(background, int(_get_terminal_size()[0] / 2) - int(_len_in_size(background) / 2), int(_get_terminal_size()[1] / 2))
+        render()
         time.sleep(0.01)
 
 if __name__ != '__main__':

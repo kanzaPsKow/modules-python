@@ -6,7 +6,7 @@ By ATN\n
 函数列表：\n
 logwrap\n
 使用方法：
-@LogWrapper
+@LogWrapper.logwrap()
 def main():
     ...
 """
@@ -25,23 +25,20 @@ def _write_log(fname, text):
     fi.write(text + '\n')
     fi.close()
 
-def logwrap(func):
+def logwrap(pause=True):
     '''对修饰函数进行日志包装并立刻执行\n
-    func ->function 需要修饰的函数\n'''
-    try:
-        func()
-    except SystemExit:
-        os.system('cls')
-        os.system("color F0")
-        sys.exit()
-    except Exception:
-        os.system("color F0")
-        print('-' * 50)
-        print("(#)游戏出错。")
-        now_time = time.localtime()
-        log_time = "error" + str(now_time[0]) + 'Y' + str(now_time[1]) + 'M' + str(now_time[2]) + 'D' + str(now_time[3]) + 'h' + str(now_time[4]) + 'm' + str(now_time[5]) + 's'
-        log_text = traceback.format_exc()
-        _write_log(log_time, log_text)
-        print("(#)错误日志已保存在游戏目录log文件夹下。")
-        print(log_text)
-        input()
+    pause ->bool 是否在输出日志后暂停程序\n'''
+    def decorator(func):
+        try:
+            func()
+        except Exception:
+            print('\n\n' + '-' * 50)
+            now_time = time.strftime("%Y%m%d_%H%M%S", time.localtime())
+            log_time = f"error_{now_time}"
+            log_text = traceback.format_exc()
+            _write_log(log_time, log_text)
+            print("错误日志已保存在 log 目录下。")
+            print(log_text)
+            if pause:
+                input('按下回车键退出...')
+    return decorator
