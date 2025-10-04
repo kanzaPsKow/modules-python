@@ -37,7 +37,7 @@ def logwrap(pause=True):
             log_time = f"error_{now_time}"
             log_text = traceback.format_exc()
             _write_log(log_time, log_text)
-            print("错误日志已保存在 log 目录下。")
+            print("错误日志已保存在 log 目录下\n")
             print(log_text)
             if pause:
                 input('按下回车键退出...')
