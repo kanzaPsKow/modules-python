@@ -6,8 +6,9 @@ TerminalRenderer\n
 By ATN\n
 函数列表：\n
 change_title\n
-print_in_pos\n
-update\n
+place\n
+render\n
+getch\n
 """
 
 import os, msvcrt, time
@@ -60,13 +61,13 @@ def getch(sleep=0.02):
     sleep=0.02 ->int 每一次获取间隔的时间。单位秒。\n
     return b'字符'"""
     get = None
-    if msvcrt.kbhit(): #如果键盘有输入
-        get = msvcrt.getch() #读取键盘输入
+    if msvcrt.kbhit(): # 如果键盘有输入
+        get = msvcrt.getch() # 读取键盘输入
     time.sleep(sleep)
     return get
 
-def print_in_pos(string, x, y, fore_color='default', back_color='default'):
-    """在指定位置渲染字符。\n
+def place(string, x, y, fore_color='default', back_color='default'):
+    """在指定位置放置字符。\n
     string ->str 字符。\n
     x ->int x坐标。\n
     y ->int y坐标。\n
@@ -84,8 +85,8 @@ def print_in_pos(string, x, y, fore_color='default', back_color='default'):
     if add != '':
         string_list.append([add, now_x, now_y, fore_color, back_color])
 
-def update(origin_colors=['white', 'black'], clear_window=True):
-    """刷新界面。\n
+def render(origin_colors=['white', 'black'], clear_window=True):
+    """渲染界面。\n
     origin_colors=['white', 'black'] ->list
     clear_window=True ->bool 是否清空界面。"""
     final_string = '\n'
@@ -95,7 +96,7 @@ def update(origin_colors=['white', 'black'], clear_window=True):
         final_string += '\n'
         y += 1
 
-        #若行内无渲染内容则跳过
+        # 若行内无渲染内容则跳过
         sth_in_line = False
         for a in string_list:
             if a[2] == y:
@@ -109,7 +110,7 @@ def update(origin_colors=['white', 'black'], clear_window=True):
             x += 1
             printed = False
             for n in range(0, len(string_list)):
-                s = string_list[len(string_list) - n - 1] #从string_list的后往前渲染
+                s = string_list[len(string_list) - n - 1] # 从string_list的后往前渲染
                 colors = [s[3], s[4]]
                 if s[3] == 'default':
                     colors[0] = origin_colors[0]
@@ -118,9 +119,9 @@ def update(origin_colors=['white', 'black'], clear_window=True):
                 if s[1] == x and s[2] == y:
                     now_print = s[0]
                     if x + _len_in_size(now_print) > max_x:
-                        if len(now_print) == 1: #中文字符
+                        if len(now_print) == 1: # 中文字符
                             now_print = _decorate_string(' ', colors[0], colors[1])
-                        elif len(now_print) == 2: #英文字符
+                        elif len(now_print) == 2: # 英文字符
                             now_print = _decorate_string(now_print[0], colors[0], colors[1])
                     final_string += _decorate_string(now_print, colors[0], colors[1])
                     printed = True
@@ -130,7 +131,7 @@ def update(origin_colors=['white', 'black'], clear_window=True):
                 final_string += ' '
     if final_string[-1] == '\n':
         final_string += ' ' * max_x
-    print(final_string[1:], end='', flush=True) #刷新print
+    print(final_string[1:], end='', flush=True) # 刷新print
     if clear_window:
         _clear()
 
@@ -148,4 +149,4 @@ if __name__ == '__main__':
         time.sleep(0.01)
 
 if __name__ != '__main__':
-    os.system('cls') #不明原因，在程序开始时必须清空一次才会正确显示
+    os.system('cls') # 不明原因，在程序开始时必须清空一次才会正确显示
