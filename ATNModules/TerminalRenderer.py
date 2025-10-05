@@ -20,10 +20,11 @@ _styles = {'default' : '0', 'highlight' : '1', 'non-highlight' : '22', 'underlin
 
 def _decorate_string(string, fore_color='default', back_color='default', style='default'):
     """对字符进行彩色修饰。在使用前景色时，背景色必须设定。\n
-    string ->str 要修饰的字符。\n
-    fore_color='default' ->str 前景色。\n
-    back_color='default' ->str 背景色。\n
-    return str 修饰后的字符"""
+    string ->str 要修饰的字符\n
+    fore_color='default' ->str 前景色\n
+    back_color='default' ->str 背景色\n
+    style='default' ->str 样式\n
+    return str: 修饰后的字符"""
     display_style = '\033[0;'
     display_style += _styles[style] + ';'
     display_style += _fore_colors[fore_color] + ';'
@@ -32,9 +33,9 @@ def _decorate_string(string, fore_color='default', back_color='default', style='
     return string
 
 def _len_in_size(string):
-    """以字符串所占的位置为标准计算长度。\n
-    string ->str 要判断的字符串。\n
-    return int 长度。"""
+    """以字符串所占的位置为标准计算长度\n
+    string ->str 要判断的字符串\n
+    return int: 长度"""
     length = 0
     for a in string:
         if len(a.encode()) == 1:
@@ -44,13 +45,13 @@ def _len_in_size(string):
     return length
 
 def change_title(title):
-    """更改标题。\n
-    title ->str 标题。"""
+    """更改标题\n
+    title ->str: 标题"""
     os.system('title ' + title)
 
 def _get_terminal_size():
-    """获取控制台行数和列数。\n
-    return int 列数, int 行数"""
+    """获取控制台行数和列数\n
+    return int: 列数, int: 行数"""
     terminal_size = os.get_terminal_size()
     return terminal_size.columns, terminal_size.lines
 
@@ -62,29 +63,28 @@ def getch():
         get = msvcrt.getch() # 读取键盘输入
     return get
 
-def place(string, x, y, fore_color='default', back_color='default'):
-    """在指定位置放置字符。\n
-    string ->str 字符。\n
-    x ->int x坐标。\n
-    y ->int y坐标。\n
-    fore_color='default' ->str 前景色。\n
-    back_color='default' ->str 背景色。"""
-    now_x, now_y = x, y
+def place(string, pos, fore_color='default', back_color='default', style='default'):
+    """在指定位置放置字符\n
+    string ->str 字符\n
+    pos ->(int, int) 坐标\n
+    fore_color='default' ->str 前景色\n
+    back_color='default' ->str 背景色"""
+    now_x, now_y = pos[0], pos[1]
     a = -1
     add = ''
     while a < len(string) - 1:
         a += 1
         add = string[a]
-        _string_list.append([add, now_x, now_y, fore_color, back_color])
+        _string_list.append([add, now_x, now_y, fore_color, back_color, style])
         now_x += _len_in_size(add)
         add = ''
     if add != '':
-        _string_list.append([add, now_x, now_y, fore_color, back_color])
+        _string_list.append([add, now_x, now_y, fore_color, back_color, style])
 
-def render(origin_colors=['white', 'black'], clear_window=True):
+def render(origin_colors=('default', 'default'), clear_window=True):
     """渲染界面。\n
-    origin_colors=['white', 'black'] ->list
-    clear_window=True ->bool 是否清空界面。"""
+    origin_colors=['default', 'default'] ->list 默认颜色
+    clear_window=True ->bool 是否清空界面"""
     final_string = '\n'
     max_x, max_y = _get_terminal_size()
     x, y = -1, -1
@@ -114,12 +114,13 @@ def render(origin_colors=['white', 'black'], clear_window=True):
                     colors[1] = origin_colors[1]
                 if s[1] == x and s[2] == y:
                     now_print = s[0]
+                    style = s[5]
                     if x + _len_in_size(now_print) > max_x:
-                        if len(now_print) == 1: # 中文字符
-                            now_print = _decorate_string(' ', colors[0], colors[1])
-                        elif len(now_print) == 2: # 英文字符
-                            now_print = _decorate_string(now_print[0], colors[0], colors[1])
-                    final_string += _decorate_string(now_print, colors[0], colors[1])
+                        if _len_in_size(now_print) == 1: # 中文字符
+                            now_print = _decorate_string(' ', colors[0], colors[1], style)
+                        elif _len_in_size(now_print) == 2: # 英文字符
+                            now_print = _decorate_string(now_print[0], colors[0], colors[1], style)
+                    final_string += _decorate_string(now_print, colors[0], colors[1], style)
                     printed = True
                     x += _len_in_size(now_print) - 1
                     break
@@ -132,7 +133,7 @@ def render(origin_colors=['white', 'black'], clear_window=True):
         _clear()
 
 def _clear():
-    """清空界面。默认在TerminalRenderer.update()中调用。"""
+    """清空界面。默认在TerminalRenderer.update()中调用"""
     global _string_list
     _string_list = []
 
