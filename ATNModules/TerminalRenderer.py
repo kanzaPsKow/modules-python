@@ -13,24 +13,22 @@ getch\n
 
 import os, msvcrt, time
 
-string_list = []
-fore_colors = {'default' : '0', 'blue' : '34', 'red' : '31', 'yellow' : '33', 'green' : '32', 'cyan' : '36', 'magenta' : '35', 'black' : '30', 'white' : '37'}
-back_colors = {'default' : '0', 'blue' : '44', 'red' : '41', 'yellow' : '43', 'green' : '42', 'cyan' : '46', 'magenta' : '45', 'black' : '40', 'white' : '47'}
-styles = {'default' : '0', 'highlight' : '1', 'non-highlight' : '22', 'underline' : '4', 'non-underline' : '24', 'flick' : '5', 'non-flick' : '25', 'reverse' : '7', 'non-reverse' : '27', 'non-visible' : '8', 'visible' : '28'}
+_string_list = []
+_fore_colors = {'default' : '0', 'blue' : '34', 'red' : '31', 'yellow' : '33', 'green' : '32', 'cyan' : '36', 'magenta' : '35', 'black' : '30', 'white' : '37'}
+_back_colors = {'default' : '0', 'blue' : '44', 'red' : '41', 'yellow' : '43', 'green' : '42', 'cyan' : '46', 'magenta' : '45', 'black' : '40', 'white' : '47'}
+_styles = {'default' : '0', 'highlight' : '1', 'non-highlight' : '22', 'underline' : '4', 'non-underline' : '24', 'flick' : '5', 'non-flick' : '25', 'reverse' : '7', 'non-reverse' : '27', 'non-visible' : '8', 'visible' : '28'}
 
-def _decorate_string(string, fore_color='default', back_color='default'):
+def _decorate_string(string, fore_color='default', back_color='default', style='default'):
     """对字符进行彩色修饰。在使用前景色时，背景色必须设定。\n
     string ->str 要修饰的字符。\n
     fore_color='default' ->str 前景色。\n
     back_color='default' ->str 背景色。\n
     return str 修饰后的字符"""
     display_style = '\033[0;'
-    if fore_color != '':
-        display_style += fore_colors[fore_color]
-    display_style += ';'
-    if back_color != '':
-        display_style += back_colors[back_color]
-    string = display_style + 'm' + string + '\033[0m'
+    display_style += _styles[style] + ';'
+    display_style += _fore_colors[fore_color] + ';'
+    display_style += _back_colors[back_color] + 'm'
+    string = display_style + string + '\033[0m'
     return string
 
 def _len_in_size(string):
@@ -77,11 +75,11 @@ def place(string, x, y, fore_color='default', back_color='default'):
     while a < len(string) - 1:
         a += 1
         add = string[a]
-        string_list.append([add, now_x, now_y, fore_color, back_color])
+        _string_list.append([add, now_x, now_y, fore_color, back_color])
         now_x += _len_in_size(add)
         add = ''
     if add != '':
-        string_list.append([add, now_x, now_y, fore_color, back_color])
+        _string_list.append([add, now_x, now_y, fore_color, back_color])
 
 def render(origin_colors=['white', 'black'], clear_window=True):
     """渲染界面。\n
@@ -96,7 +94,7 @@ def render(origin_colors=['white', 'black'], clear_window=True):
 
         # 若行内无渲染内容则跳过
         sth_in_line = False
-        for a in string_list:
+        for a in _string_list:
             if a[2] == y:
                 sth_in_line = True
                 break
@@ -107,8 +105,8 @@ def render(origin_colors=['white', 'black'], clear_window=True):
         while x < max_x - 1:
             x += 1
             printed = False
-            for n in range(0, len(string_list)):
-                s = string_list[len(string_list) - n - 1] # 从string_list的后往前渲染
+            for n in range(0, len(_string_list)):
+                s = _string_list[len(_string_list) - n - 1] # 从string_list的后往前渲染
                 colors = [s[3], s[4]]
                 if s[3] == 'default':
                     colors[0] = origin_colors[0]
@@ -135,8 +133,8 @@ def render(origin_colors=['white', 'black'], clear_window=True):
 
 def _clear():
     """清空界面。默认在TerminalRenderer.update()中调用。"""
-    global string_list
-    string_list = []
+    global _string_list
+    _string_list = []
 
 if __name__ == '__main__':
     os.system('cls')
