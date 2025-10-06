@@ -14,15 +14,15 @@ getch\n
 import os, msvcrt, time
 
 _string_list = []
-_fore_colors = {'default' : '0', 'blue' : '34', 'red' : '31', 'yellow' : '33', 'green' : '32', 'cyan' : '36', 'magenta' : '35', 'black' : '30', 'white' : '37'}
-_back_colors = {'default' : '0', 'blue' : '44', 'red' : '41', 'yellow' : '43', 'green' : '42', 'cyan' : '46', 'magenta' : '45', 'black' : '40', 'white' : '47'}
+_fore_colors = {'sys_default' : '39', 'blue' : '34', 'red' : '31', 'yellow' : '33', 'green' : '32', 'cyan' : '36', 'magenta' : '35', 'black' : '30', 'white' : '37'}
+_back_colors = {'sys_default' : '49', 'blue' : '44', 'red' : '41', 'yellow' : '43', 'green' : '42', 'cyan' : '46', 'magenta' : '45', 'black' : '40', 'white' : '47'}
 _styles = {'default' : '0', 'highlight' : '1', 'non-highlight' : '22', 'underline' : '4', 'non-underline' : '24', 'flick' : '5', 'non-flick' : '25', 'reverse' : '7', 'non-reverse' : '27', 'non-visible' : '8', 'visible' : '28'}
 
-def _decorate_string(string, fore_color='default', back_color='default', style='default'):
+def _decorate_string(string, fore_color='sys_default', back_color='sys_default', style='default'):
     """对字符进行彩色修饰。在使用前景色时，背景色必须设定。\n
     string ->str 要修饰的字符\n
-    fore_color='default' ->str 前景色\n
-    back_color='default' ->str 背景色\n
+    fore_color='sys_default' ->str 前景色\n
+    back_color='sys_default' ->str 背景色\n
     style='default' ->str 样式\n
     return str: 修饰后的字符"""
     display_style = '\033[0;'
@@ -69,6 +69,7 @@ def place(string, pos, fore_color='default', back_color='default', style='defaul
     pos ->(int, int) 坐标\n
     fore_color='default' ->str 前景色\n
     back_color='default' ->str 背景色"""
+    string = str(string)
     now_x, now_y = pos[0], pos[1]
     a = -1
     add = ''
@@ -81,9 +82,9 @@ def place(string, pos, fore_color='default', back_color='default', style='defaul
     if add != '':
         _string_list.append([add, now_x, now_y, fore_color, back_color, style])
 
-def render(origin_colors=('default', 'default'), clear_window=True):
+def render(origin_colors=('sys_default', 'sys_default'), clear_window=True):
     """渲染界面。\n
-    origin_colors=['default', 'default'] ->list 默认颜色
+    origin_colors=['sys_default', 'sys_default'] ->list 默认颜色
     clear_window=True ->bool 是否清空界面"""
     final_string = '\n'
     max_x, max_y = _get_terminal_size()
