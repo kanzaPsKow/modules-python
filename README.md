@@ -40,6 +40,7 @@ while 1:
 ### `void logwrap(bool pause=True)`
 将主函数包装日志保存功能并立刻执行
 - `pause` -> 选择是否在输出日志后使用`input()`方法暂停程序
+
 示例程序结构：
 ```
 @LogWrapper.logwrap()
