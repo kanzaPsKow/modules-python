@@ -9,6 +9,7 @@ change_title\n
 place\n
 render\n
 getch\n
+get_terminal_size\n
 """
 
 import os, msvcrt, time
@@ -137,6 +138,10 @@ def _clear():
     """清空界面。默认在TerminalRenderer.update()中调用"""
     global _string_list
     _string_list = []
+
+def get_terminal_size():
+    a, b = _get_terminal_size()
+    return (a, b)
 
 if __name__ == '__main__':
     os.system('cls')
