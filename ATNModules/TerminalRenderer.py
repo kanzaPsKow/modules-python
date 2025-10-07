@@ -12,7 +12,7 @@ getch\n
 get_terminal_size\n
 """
 
-import os, msvcrt, time
+import os, msvcrt, time, random
 
 _string_list = []
 _fore_colors = {'sys_default' : '39', 'blue' : '34', 'red' : '31', 'yellow' : '33', 'green' : '32', 'cyan' : '36', 'magenta' : '35', 'black' : '30', 'white' : '37'}
@@ -58,7 +58,7 @@ def _get_terminal_size():
 
 def getch():
     """在不阻断程序的情况下获取键盘输入。\n
-    return b'string'"""
+    return b'string': 输入键值"""
     get = None
     if msvcrt.kbhit(): # 如果键盘有输入
         get = msvcrt.getch() # 读取键盘输入
@@ -69,7 +69,8 @@ def place(string, pos, fore_color='default', back_color='default', style='defaul
     string ->str 字符\n
     pos ->(int, int) 坐标\n
     fore_color='default' ->str 前景色\n
-    back_color='default' ->str 背景色"""
+    back_color='default' ->str 背景色\n
+    style='default' ->str 字符样式"""
     string = str(string)
     now_x, now_y = pos[0], pos[1]
     a = -1
@@ -140,16 +141,19 @@ def _clear():
     _string_list = []
 
 def get_terminal_size():
+    """获取控制台行数和列数\n
+    return (int: 列数, int: 行数)"""
     a, b = _get_terminal_size()
     return (a, b)
 
 if __name__ == '__main__':
     os.system('cls')
     background = 'Welcome  TerminalRenderer  Welcome'
+    color = list(_fore_colors.keys())[random.randint(0, len(_fore_colors) - 1)]
     while 1:
-        place(background, int(_get_terminal_size()[0] / 2) - int(_len_in_size(background) / 2), int(_get_terminal_size()[1] / 2))
+        place(background, (int(get_terminal_size()[0] / 2) - int(_len_in_size(background) / 2), int(get_terminal_size()[1] / 2)), color, 'default', 'highlight')
         render()
-        time.sleep(0.01)
+        time.sleep(1 / 60)
 
 if __name__ != '__main__':
     os.system('cls') # 不明原因，在程序开始时必须清空一次才会正确显示
