@@ -60,8 +60,8 @@ def getch():
     """在不阻断程序的情况下获取键盘输入。\n
     return b'string': 输入键值"""
     get = None
-    if msvcrt.kbhit(): # 如果键盘有输入
-        get = msvcrt.getch() # 读取键盘输入
+    if msvcrt.kbhit():  # 如果键盘有输入
+        get = msvcrt.getch()  # 读取键盘输入
     return get
 
 def place(string, pos, fore_color='default', back_color='default', style='default'):
@@ -109,7 +109,7 @@ def render(origin_colors=('sys_default', 'sys_default'), clear_window=True):
             x += 1
             printed = False
             for n in range(0, len(_string_list)):
-                s = _string_list[len(_string_list) - n - 1] # 从string_list的后往前渲染
+                s = _string_list[len(_string_list) - n - 1]  # 从string_list的后往前渲染
                 colors = [s[3], s[4]]
                 if s[3] == 'default':
                     colors[0] = origin_colors[0]
@@ -119,9 +119,9 @@ def render(origin_colors=('sys_default', 'sys_default'), clear_window=True):
                     now_print = s[0]
                     style = s[5]
                     if x + _len_in_size(now_print) > max_x:
-                        if _len_in_size(now_print) == 1: # 中文字符
+                        if _len_in_size(now_print) == 1:  # 中文字符
                             now_print = _decorate_string(' ', colors[0], colors[1], style)
-                        elif _len_in_size(now_print) == 2: # 英文字符
+                        elif _len_in_size(now_print) == 2:  # 英文字符
                             now_print = _decorate_string(now_print[0], colors[0], colors[1], style)
                     final_string += _decorate_string(now_print, colors[0], colors[1], style)
                     printed = True
@@ -131,7 +131,7 @@ def render(origin_colors=('sys_default', 'sys_default'), clear_window=True):
                 final_string += ' '
     if final_string[-1] == '\n':
         final_string += ' ' * max_x
-    print(final_string[1:], end='', flush=True) # 刷新print
+    print(final_string[1:], end='', flush=True)  # 刷新print
     if clear_window:
         _clear()
 
@@ -156,4 +156,4 @@ if __name__ == '__main__':
         time.sleep(1 / 60)
 
 if __name__ != '__main__':
-    os.system('cls') # 不明原因，在程序开始时必须清空一次才会正确显示
+    os.system('cls')  # 不明原因，在程序开始时必须清空一次才会正确显示
