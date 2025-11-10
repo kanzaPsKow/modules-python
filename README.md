@@ -1,5 +1,5 @@
 ## 导入说明
-将`KowModules`目录放入项目中，用`from KowModules import *`引入所有模块或根据需求引入
+将`KowModules`目录放入项目中，`import KowModules`即可
 ## 模块目录
 - `TerminalRenderer` 控制台渲染器
 - `LogWrapper` 日志包装器
@@ -32,9 +32,9 @@
 示例程序结构：
 ```
 while 1:
-    TerminalRenderer.place('...') # 放置字符
-    TerminalRenderer.render() # 渲染字符
-    keyboard_input = getch() # 获取键盘输入
+    KowModules.TerminalRenderer.place('...') # 放置字符
+    KowModules.TerminalRenderer.render() # 渲染字符
+    keyboard_input = KowModules.TerminalRenderer.getch() # 获取键盘输入
     time.sleep(1 / 60) # 控制帧率
 ```
 返回按键对应的字节串
