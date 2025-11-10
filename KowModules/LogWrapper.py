@@ -2,7 +2,7 @@
 LogWrapper\n
 日志包装器\n
 使程序的错误报告存储到 log 目录中\n
-By ATN\n
+By KanzaPskow\n
 函数列表：\n
 logwrap\n
 使用方法：

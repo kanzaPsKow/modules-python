@@ -3,7 +3,7 @@ TerminalRenderer\n
 控制台渲染器\n
 便于用控制台设计图形和键盘操作程序，以增强程序的可读性
 与其他控制台程序一样，TerminalRenderer不适合实时高速渲染\n
-By ATN\n
+By KanzaPskow\n
 函数列表：\n
 change_title\n
 place\n
